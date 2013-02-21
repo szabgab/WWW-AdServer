@@ -11,3 +11,5 @@ http://cpan.metacpan.org/authors/id/N/NW/NWETTERS/WWW-AdServer-0.02.tar.gz
 
 At one point this module should be able to run the [Perl Community AdServer](http://pcas.szabgab.com/)
 
+It should also be able to run the ads on the [Perl Maven](http://perl5maven.com/) site.
+
