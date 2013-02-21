@@ -22,9 +22,10 @@ sub BUILD {
     if (not $self->type) {
         if ($self->dsn =~ /\.yml$/) {
             $self->type('YAML');
-            require WWW::AdServer::Database::YAML;
-            $self->db( WWW::AdServer::Database::YAML->new );
-            $self->db->load($self->dsn);
+            with 'WWW::AdServer::Database::YAML';
+            $self->db( $self->load($self->dsn) );
+            #$self->db( WWW::AdServer::Database::YAML->new );
+            #$self->db->load($self->dsn);
         }
     }
     return;

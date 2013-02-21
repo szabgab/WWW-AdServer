@@ -1,7 +1,7 @@
 use strict;
 use warnings;
 package WWW::AdServer::Database::YAML;
-use Moo;
+use Moo::Role;
 
 use YAML ();
 
@@ -14,6 +14,11 @@ sub load {
     my ($self, $path) = @_;
     $self->data( YAML::LoadFile($path) );
     return;
+}
+
+sub count_ads {
+    my ($self) = @_;
+    return scalar @{ $self->data->{ads} };
 }
 
 

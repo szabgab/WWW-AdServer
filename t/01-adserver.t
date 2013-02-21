@@ -3,7 +3,7 @@ use warnings;
 
 use Test::More;
 
-plan tests => 4;
+plan tests => 5;
 
 use WWW::AdServer;
 
@@ -15,5 +15,5 @@ isa_ok($db, 'WWW::AdServer::Database');
 is $db->dsn, 't/files/ads.yml', 'dsn ok';
 is $db->type, 'YAML', 'type ok';
 
-#diag $db->count_ads;
+is $db->count_ads, 12, 'count_ads';
 
