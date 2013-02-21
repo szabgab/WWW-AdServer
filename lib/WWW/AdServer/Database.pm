@@ -3,4 +3,25 @@ use warnings;
 package WWW::AdServer::Database;
 use Moo;
 
+has dsn => (
+    is       => 'ro',
+    required => 1,
+);
+
+has type => (
+    is       => 'rw',
+);
+
+
+sub BUILD {
+    my ($self) = @_;
+    if (not $self->type) {
+        if ($self->dsn =~ /\.yml$/) {
+            $self->type('YAML');
+            require WWW::AdServer::Database::YAML;
+        }
+    }
+    return;
+}
+
 1;
