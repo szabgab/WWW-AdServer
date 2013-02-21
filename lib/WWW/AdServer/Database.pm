@@ -12,6 +12,10 @@ has type => (
     is       => 'rw',
 );
 
+has db => (
+    is    => 'rw',
+);
+
 
 sub BUILD {
     my ($self) = @_;
@@ -19,6 +23,8 @@ sub BUILD {
         if ($self->dsn =~ /\.yml$/) {
             $self->type('YAML');
             require WWW::AdServer::Database::YAML;
+            $self->db( WWW::AdServer::Database::YAML->new );
+            $self->db->load($self->dsn);
         }
     }
     return;

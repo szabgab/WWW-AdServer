@@ -15,3 +15,5 @@ isa_ok($db, 'WWW::AdServer::Database');
 is $db->dsn, 't/files/ads.yml', 'dsn ok';
 is $db->type, 'YAML', 'type ok';
 
+#diag $db->count_ads;
+
