@@ -2,6 +2,8 @@ package WWW::AdServer::Database::YAML;
 use Moo::Role;
 
 use YAML ();
+use Data::Dumper qw(Dumper);
+use List::MoreUtils qw(none);
 
 has data => (
     is  => 'rw',
@@ -21,8 +23,20 @@ sub count_ads {
 
 sub get_ads {
 	my ($self, %args) = @_;
+	my @ads;
+	for my $ad (@{ $self->data->{ads} }) {
+		#warn Dumper $ad;
+		if ($args{country}) {
+			next if $ad->{countries} and none {$args{country} eq $_} @{ $ad->{countries} };
+		}
+		if (defined $args{limit}) {
+			last if $args{limit} <= 0;
+			$args{limit}--;
+		}
+		push @ads, $ad;
+	}
 
-	return;
+	return \@ads;
 }
 
 
