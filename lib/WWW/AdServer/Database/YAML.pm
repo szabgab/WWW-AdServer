@@ -1,9 +1,11 @@
 package WWW::AdServer::Database::YAML;
 use Moo::Role;
+use 5.010;
 
 use YAML ();
-use Data::Dumper qw(Dumper);
+use Data::Dumper    qw(Dumper);
 use List::MoreUtils qw(none);
+use Time::Local     qw(timelocal);
 
 has data => (
     is  => 'rw',
@@ -12,7 +14,30 @@ has data => (
 
 sub load {
     my ($self, $path) = @_;
-    $self->data( YAML::LoadFile($path) );
+    my $data =  YAML::LoadFile($path);
+
+	my @valid_ads;
+	my $now = time;
+	foreach my $ad (@{ $data->{ads} }) {
+        if ($ad->{end_date}) {
+            my ($year, $month, $day) = split /-/, $ad->{end_date};
+            eval {
+                $ad->{end_date} = timelocal(59, 59, 23, $day, $month-1, $year-1900);
+            };
+            if ($@) {
+                #print STDERR "$ad->{text}\n";
+                #print STDERR "$ad->{end_date}\n";
+                #print STDERR "$@\n";
+                $ad->{end_date} = 0;
+            }
+			next if $ad->{end_date} < $now;
+		}
+		push @valid_ads, $ad;
+	}
+	$data->{ads} = \@valid_ads;
+    $self->data( $data );
+
+
     return;
 }
 

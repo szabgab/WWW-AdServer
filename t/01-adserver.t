@@ -16,9 +16,11 @@ isa_ok($db, 'WWW::AdServer::Database');
 is $db->dsn, 't/files/ads.yml', 'dsn ok';
 is $db->type, 'YAML', 'type ok';
 
-is $db->count_ads, 12, 'count_ads';
+is $db->count_ads, 10, 'count_ads';
 
-is_deeply $db->get_ads(country => 'FR'),
+subtest 'FR' => sub {
+	my $ads = $db->get_ads(country => 'FR');
+	is_deeply $ads,
 [
    {
      'text' => 'Need an IDE for Perl? <a href=http://padre.perlide.org/>Download Padre</a>'
@@ -30,7 +32,8 @@ is_deeply $db->get_ads(country => 'FR'),
      'text' => '<a href=http://www.perlbuzz.com/>All the Buzz Perl can get</a>'
    },
    {
-     'text' => 'Don\'t miss the <a href=http://perlweekly.com/>Perl Weekly</a> newsletter'
+     'text' => 'Don\'t miss the <a href=http://perlweekly.com/>Perl Weekly</a> newsletter',
+     'end_date' => '1439589599',
    },
    {
      'countries' => [
@@ -38,12 +41,11 @@ is_deeply $db->get_ads(country => 'FR'),
        'CH'
      ],
      'text' => "<a href=http://www.perlfoundation.org/perl5/index.cgi?french>Ressources Perl en fran\x{e7}ais</a>"
-   },
-   {
-     'end_date' => '2013-08-14',
-     'text' => '<a href=http://yapc.eu/2013>YAPC::EU 2013</a> 12-14 August, Kiev, Ukraine'
    }
 ], 'get_ads FR';
+	#diag explain $ads;
+};
+
 
 is_deeply $db->get_ads(country => 'IL', limit => 1),
 [

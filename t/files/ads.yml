@@ -4,6 +4,7 @@ ads:
   - text: <a href=http://www.perlmonks.org/>Get help from the PerlMonks</a>
   - text: <a href=http://www.perlbuzz.com/>All the Buzz Perl can get</a>
   - text: Don't miss the <a href=http://perlweekly.com/>Perl Weekly</a> newsletter
+    end_date: 2015-08-14
   - text: Join the <a href=http://perl.org.il/>Perl community</a> monthly meetings and learn and discuss Perl
     countries:
       - IL
