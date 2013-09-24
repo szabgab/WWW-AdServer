@@ -1,5 +1,3 @@
-use strict;
-use warnings;
 package WWW::AdServer::Database::YAML;
 use Moo::Role;
 
@@ -19,6 +17,12 @@ sub load {
 sub count_ads {
     my ($self) = @_;
     return scalar @{ $self->data->{ads} };
+}
+
+sub get_ads {
+	my ($self, %args) = @_;
+
+	return;
 }
 
 

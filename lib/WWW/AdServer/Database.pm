@@ -1,5 +1,3 @@
-use strict;
-use warnings;
 package WWW::AdServer::Database;
 use Moo;
 
@@ -19,6 +17,7 @@ has db => (
 
 sub BUILD {
     my ($self) = @_;
+
     if (not $self->type) {
         if ($self->dsn =~ /\.yml$/) {
             $self->type('YAML');
