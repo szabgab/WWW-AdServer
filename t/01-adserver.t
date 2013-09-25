@@ -61,12 +61,20 @@ subtest 'IL' => sub {
 
 	$ads = $db->get_ads(country => 'IL', limit => 1, shuffle => 1);
 	#diag explain $ads;
-	my $oks = 0;
-	foreach my $exp (@$il_ads) {
-		my ($ok, $stack) = cmp_details($ads->[0], $exp);
-		$oks = $ok ? $ok : $oks;
-	}
-	ok($oks);
+	one_deeply_ok($ads->[0], $il_ads, 'one IL shuffle');
 };
+
+sub one_deeply_ok {
+    my ($real, $possibilities, $name) = @_;
+	$name ||= '';
+
+	my $oks = 0;
+	foreach my $exp (@$possibilities) {
+		my ($ok, $stack) = cmp_details($real, $exp);
+		$oks = $ok ? $ok : $oks;
+		last if $oks;
+	}
+	ok($oks, $name);
+}
 
 
