@@ -4,7 +4,7 @@ use warnings;
 use Test::More;
 use Test::Deep qw(cmp_details);
 
-plan tests => 7;
+plan tests => 8;
 
 use WWW::AdServer;
 use WWW::AdServer::Database;
@@ -64,6 +64,20 @@ subtest 'IL' => sub {
 	one_deeply_ok($ads->[0], $il_ads, 'one IL shuffle');
 };
 
+subtest 'geoip' => sub {
+	use Geo::IP;
+	my $gi = Geo::IP->new(GEOIP_MEMORY_CACHE);
+	my %data = (
+		'24.24.24.24'  => 'US',
+		'86.59.162.2'  => 'HU',
+	);
+	foreach my $ip (sort keys %data) {
+		my $country = $gi->country_code_by_addr($ip);
+		#diag $country;
+		is($country, $data{$ip}, $ip);
+	}
+};
+
 sub one_deeply_ok {
     my ($real, $possibilities, $name) = @_;
 	$name ||= '';
@@ -76,5 +90,6 @@ sub one_deeply_ok {
 	}
 	ok($oks, $name);
 }
+
 
 
