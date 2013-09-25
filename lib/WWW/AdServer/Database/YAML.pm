@@ -4,6 +4,7 @@ use 5.010;
 
 use YAML ();
 use Data::Dumper    qw(Dumper);
+use List::Util      qw(shuffle);
 use List::MoreUtils qw(none);
 use Time::Local     qw(timelocal);
 
@@ -16,6 +17,7 @@ sub load {
     my ($self, $path) = @_;
     my $data =  YAML::LoadFile($path);
 
+	# TODO some tool to return the entries where the dead-line passed
 	my @valid_ads;
 	my $now = time;
 	foreach my $ad (@{ $data->{ads} }) {
@@ -37,7 +39,6 @@ sub load {
 	$data->{ads} = \@valid_ads;
     $self->data( $data );
 
-
     return;
 }
 
@@ -49,7 +50,11 @@ sub count_ads {
 sub get_ads {
 	my ($self, %args) = @_;
 	my @ads;
-	for my $ad (@{ $self->data->{ads} }) {
+	my @all_ads = @{ $self->data->{ads} };
+	if ($args{shuffle}) {
+		@all_ads = shuffle @all_ads;
+	}
+	for my $ad (@all_ads) {
 		#warn Dumper $ad;
 		if ($args{country}) {
 			next if $ad->{countries} and none {$args{country} eq $_} @{ $ad->{countries} };

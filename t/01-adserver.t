@@ -2,6 +2,7 @@ use strict;
 use warnings;
 
 use Test::More;
+use Test::Deep qw(cmp_details);
 
 plan tests => 7;
 
@@ -47,10 +48,25 @@ subtest 'FR' => sub {
 };
 
 
-is_deeply $db->get_ads(country => 'IL', limit => 1),
-[
-   {
-     'text' => 'Need an IDE for Perl? <a href=http://padre.perlide.org/>Download Padre</a>'
-   },
-], 'get_ads IL 1';
+subtest 'IL' => sub {
+	my $il_ads = $db->get_ads(country => 'IL');
+	#diag explain $il_ads;
+	my $ads = $db->get_ads(country => 'IL', limit => 1);
+	is_deeply $ads,
+	[
+	   {
+	     'text' => 'Need an IDE for Perl? <a href=http://padre.perlide.org/>Download Padre</a>'
+	   },
+	], 'get_ads IL 1';
+
+	$ads = $db->get_ads(country => 'IL', limit => 1, shuffle => 1);
+	#diag explain $ads;
+	my $oks = 0;
+	foreach my $exp (@$il_ads) {
+		my ($ok, $stack) = cmp_details($ads->[0], $exp);
+		$oks = $ok ? $ok : $oks;
+	}
+	ok($oks);
+};
+
 
