@@ -6,7 +6,7 @@ use YAML ();
 use Data::Dumper    qw(Dumper);
 use List::Util      qw(shuffle);
 use List::MoreUtils qw(none);
-use Time::Local     qw(timelocal);
+use Time::Local     qw(timegm);
 
 has data => (
     is  => 'rw',
@@ -24,7 +24,7 @@ sub load {
         if ($ad->{end_date}) {
             my ($year, $month, $day) = split /-/, $ad->{end_date};
             eval {
-                $ad->{end_date} = timelocal(59, 59, 23, $day, $month-1, $year-1900);
+                $ad->{end_date} = timegm(59, 59, 23, $day, $month-1, $year-1900);
             };
             if ($@) {
                 #print STDERR "$ad->{text}\n";

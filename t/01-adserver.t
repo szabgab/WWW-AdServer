@@ -34,7 +34,7 @@ subtest 'FR' => sub {
    },
    {
      'text' => 'Don\'t miss the <a href=http://perlweekly.com/>Perl Weekly</a> newsletter',
-     'end_date' => '1439589599',
+     'end_date' => '1439596799',
    },
    {
      'countries' => [
