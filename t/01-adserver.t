@@ -8,6 +8,7 @@ plan tests => 8;
 
 use WWW::AdServer;
 use WWW::AdServer::Database;
+use Geo::IP;
 
 my $ads = WWW::AdServer->new;
 isa_ok($ads, 'WWW::AdServer');
@@ -65,8 +66,12 @@ subtest 'IL' => sub {
 };
 
 subtest 'geoip' => sub {
-	use Geo::IP;
-	my $gi = Geo::IP->new(GEOIP_MEMORY_CACHE);
+	my $gi;
+	eval {
+		$gi = Geo::IP->new(GEOIP_MEMORY_CACHE);
+	};
+	plan skip_all => 'Geo::IP is not working' if $@ or not defined $gi;
+
 	my %data = (
 		'24.24.24.24'  => 'US',
 		'86.59.162.2'  => 'HU',
