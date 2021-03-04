@@ -1,0 +1,31 @@
+---
+ads:
+  - weight: 1
+    text: |
+           <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+           <!-- perlmaven_tall -->
+           <ins class="adsbygoogle"
+                style="display:inline-block;width:300px;height:600px"
+                data-ad-client="ca-pub-7760157643054954"
+                data-ad-slot="4957294134"></ins>
+           <script>
+           (adsbygoogle = window.adsbygoogle || []).push({});
+           </script>
+  - weight: 2
+    text: |
+           <SCRIPT charset="utf-8" type="text/javascript" src="http://ws-na.amazon-adsystem.com/widgets/q?rt=tf_cw&ServiceVersion=20070822&MarketPlace=US&ID=V20070822%2FUS%2Fszabgab-20%2F8010%2F26ca9310-2b30-444c-a131-99a1b4214f78&Operation=GetScriptTemplate"> </SCRIPT> <NOSCRIPT><A HREF="http://ws-na.amazon-adsystem.com/widgets/q?rt=tf_cw&ServiceVersion=20070822&MarketPlace=US&ID=V20070822%2FUS%2Fszabgab-20%2F8010%2F26ca9310-2b30-444c-a131-99a1b4214f78&Operation=NoScript">Amazon.com Widgets</A></NOSCRIPT>
+  - weight: 100
+    text: |
+           <div style="margin-top: 200px; text-align:center">
+           <script type="text/javascript">
+             ( function() {
+               if (window.CHITIKA === undefined) { window.CHITIKA = { 'units' : [] }; };
+               var unit = {"calltype":"async[2]","publisher":"szabgab","width":160,"height":600,"sid":"Chitika Default"};
+               var placement_id = window.CHITIKA.units.length;
+               window.CHITIKA.units.push(unit);
+               document.write('<div id="chitikaAdBlock-' + placement_id + '"></div>');
+           }());
+           </script>
+           <script type="text/javascript" src="//cdn.chitika.net/getads.js" async></script>
+           </div>
+    

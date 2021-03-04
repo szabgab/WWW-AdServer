@@ -1,0 +1,9 @@
+---
+ads:
+  - weight: 1
+    text: one
+  - weight: 2
+    text: two
+  - weight: 97
+    text: hundred
+

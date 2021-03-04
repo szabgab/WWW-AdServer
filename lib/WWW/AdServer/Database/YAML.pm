@@ -4,13 +4,17 @@ use 5.010;
 
 use YAML ();
 use Data::Dumper    qw(Dumper);
-use List::Util      qw(shuffle);
+use List::Util      qw(shuffle sum);
 use List::MoreUtils qw(none);
 use Time::Local     qw(timegm);
 
 has data => (
     is  => 'rw',
     isa => sub { die "$_[0] is not a refernce to a hash" unless ref $_[0] eq 'HASH' },
+);
+has weights => (
+	is => 'rw',
+	default => sub { [] },
 );
 
 sub load {
@@ -20,6 +24,7 @@ sub load {
 	# TODO some tool to return the entries where the dead-line passed
 	my @valid_ads;
 	my $now = time;
+	my @weights;
 	foreach my $ad (@{ $data->{ads} }) {
         if ($ad->{end_date}) {
             my ($year, $month, $day) = split /-/, $ad->{end_date};
@@ -34,10 +39,14 @@ sub load {
             }
 			next if $ad->{end_date} < $now;
 		}
+		if ($ad->{weight}) {
+			push @weights, (scalar @valid_ads) x $ad->{weight};
+		}
 		push @valid_ads, $ad;
 	}
 	$data->{ads} = \@valid_ads;
     $self->data( $data );
+	$self->weights( \@weights );
 
     return;
 }
@@ -47,8 +56,18 @@ sub count_ads {
     return scalar @{ $self->data->{ads} };
 }
 
+sub get_random_ad {
+	my ($self, %args) = @_;
+	my @all_ads = @{ $self->data->{ads} };
+	#my $weight = sum map { $_->{weight} } @all_ads;
+	#return $weight;
+	my $weights = $self->weights;
+	return $weights->[ int rand scalar @$weights ];
+}
+
 sub get_ads {
 	my ($self, %args) = @_;
+
 	my @ads;
 	my @all_ads = @{ $self->data->{ads} };
 	if ($args{shuffle}) {

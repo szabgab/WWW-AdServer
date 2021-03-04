@@ -4,7 +4,7 @@ use warnings;
 use Test::More;
 use Test::Deep qw(cmp_details);
 
-plan tests => 8;
+plan tests => 10;
 
 use WWW::AdServer;
 use WWW::AdServer::Database;
@@ -81,6 +81,47 @@ subtest 'geoip' => sub {
 		#diag $country;
 		is($country, $data{$ip}, $ip);
 	}
+};
+
+subtest 'more' => sub {
+	plan tests => 5;
+
+	my $adsense = WWW::AdServer->new;
+	isa_ok($adsense, 'WWW::AdServer');
+
+	my $db = WWW::AdServer::Database->new(dsn => 't/files/adsense.yml');
+	isa_ok($db, 'WWW::AdServer::Database');
+	is $db->dsn, 't/files/adsense.yml', 'dsn ok';
+	is $db->type, 'YAML', 'type ok';
+
+	is $db->count_ads, 3, 'count_ads';
+};
+
+subtest 'weight' => sub {
+	plan tests => 8;
+
+	my $adsense = WWW::AdServer->new;
+	isa_ok($adsense, 'WWW::AdServer');
+
+	my $db = WWW::AdServer::Database->new(dsn => 't/files/ads_weight.yml');
+	isa_ok($db, 'WWW::AdServer::Database');
+	is $db->dsn, 't/files/ads_weight.yml', 'dsn ok';
+	is $db->type, 'YAML', 'type ok';
+
+	is $db->count_ads, 3, 'count_ads';
+
+	my %count;
+	my $N = 10000;
+	for (1..$N) {
+		my $ad = $db->get_random_ad;
+		$count{$ad}++;
+	}
+
+	# random numbers can't be exact but should not differ a lot from the expected
+	cmp_ok $count{0}, '<', $N*2/100, 'should be around 1%';
+	cmp_ok $count{1}, '<', $N*4/100, 'should be around 2%';
+	cmp_ok $count{2}, '>', $N*94/100, 'should be around 97%';
+	#:diag explain \%count;
 };
 
 sub one_deeply_ok {
